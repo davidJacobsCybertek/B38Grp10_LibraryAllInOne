@@ -1,5 +1,6 @@
 package com.library.steps;
 
+import com.library.utility.LibraryAPI_Util;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
@@ -38,6 +39,20 @@ public class APIStepDefs {
     String expectedID;
 
     Map<String, Object> randomData=new HashMap<>();
+
+    @Given("I logged Library api as a {string}")
+    public void i_logged_library_api_as_a(String role) {
+        //OPT1
+        //givenPart.header("x-library-token", LibraryAPI_Util.getToken("librarian10@library","libraryUser"));
+
+        //OPT2
+        //givenPart.header("x-library-token", LibraryAPI_Util.getToken(ConfigurationReader.getProperty("librarian_username"),ConfigurationReader.getProperty("librarian_password")));
+
+        //OPT3 -->Go to LibraryAPI_Util line 45 --> getToken(userType) Method
+        givenPart.header("x-library-token", LibraryAPI_Util.getToken(role));
+
+        givenPart.log().all();
+    }
 
     @Given("Path param {string} is {string}")
     public void path_param_is(String pathParam, String value) {
